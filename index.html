@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrainBoost – Train Your Brain</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080810;
+      --bg2: #0d0d1a;
+      --bg3: #111120;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --accent: #6366f1;
+      --accent2: #8b5cf6;
+      --accent-glow: rgba(99,102,241,0.2);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      background: rgba(8,8,16,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--text); text-decoration: none; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta { background: var(--accent); color: #fff; padding: 10px 22px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; text-decoration: none; transition: opacity 0.2s; }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 20px 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 100px; padding: 8px 18px;
+      font-size: 0.8rem; font-weight: 600; color: #a5b4fc;
+      margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 800; line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #f1f5f9 30%, #a5b4fc);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      max-width: 580px; color: var(--text-muted); font-size: 1.1rem;
+      margin-bottom: 40px; line-height: 1.7;
+    }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-bottom: 64px; }
+    .btn-primary { background: var(--accent); color: #fff; padding: 14px 30px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: opacity 0.2s, transform 0.2s; }
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+    .btn-secondary { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 14px 30px; border-radius: 12px; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: border-color 0.2s; }
+    .btn-secondary:hover { border-color: rgba(99,102,241,0.4); }
+    .hero-stats { display: flex; gap: 48px; flex-wrap: wrap; justify-content: center; }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--text); }
+    .stat-label { font-size: 0.8rem; color: var(--text-dim); font-weight: 500; margin-top: 2px; }
+
+    /* ── SECTION SHELL ── */
+    .section { padding: 100px 20px; position: relative; }
+    .section-alt { background: var(--bg2); }
+    .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+    .section-title { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: var(--text); margin-bottom: 14px; }
+    .section-sub { max-width: 580px; color: var(--text-muted); font-size: 1rem; line-height: 1.7; }
+    .section-header { text-align: center; margin-bottom: 60px; }
+    .section-header .section-sub { margin: 0 auto; }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    /* ── ABOUT ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1000px; margin: 0 auto; }
+    .about-text .section-sub { max-width: 100%; }
+    .about-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .pill { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); border-radius: 100px; padding: 8px 16px; font-size: 0.85rem; font-weight: 600; color: #a5b4fc; }
+    .about-visual { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; }
+    .about-visual-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .about-visual-row:last-child { border-bottom: none; }
+    .avi-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(99,102,241,0.15); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .avi-label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+    .avi-sub { font-size: 0.8rem; color: var(--text-dim); }
+
+    /* ── FEATURE CARDS ── */
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
+    .feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; transition: border-color 0.3s, transform 0.2s; }
+    .feature-card:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-3px); }
+    .fc-icon { font-size: 1.8rem; margin-bottom: 16px; }
+    .fc-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 8px; }
+    .fc-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ── TECH STACK ── */
+    .tech-grid { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; max-width: 800px; margin: 0 auto; }
+    .tech-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 24px; text-align: center; min-width: 110px; transition: border-color 0.2s; }
+    .tech-chip:hover { border-color: rgba(99,102,241,0.35); }
+    .tech-chip .tc-icon { font-size: 1.6rem; margin-bottom: 6px; }
+    .tech-chip .tc-name { font-weight: 700; font-size: 0.85rem; color: var(--text); }
+    .tech-chip .tc-role { font-size: 0.72rem; color: var(--text-dim); margin-top: 2px; }
+
+    /* ── GAMES ── */
+    .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto; }
+    .game-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color 0.3s, transform 0.2s; }
+    .game-card:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-4px); }
+    .game-thumb {
+      height: 180px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem;
+      background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.06));
+      position: relative; overflow: hidden;
+    }
+    /* slots for real screenshots — add class .has-img and put <img> inside */
+    .game-thumb img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .game-body { padding: 20px 24px; }
+    .game-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--text); margin-bottom: 4px; }
+    .game-skill { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; }
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 100px; font-size: 0.72rem; font-weight: 700; }
+    .badge-easy { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.2); }
+    .badge-medium { background: rgba(234,179,8,0.12); color: #facc15; border: 1px solid rgba(234,179,8,0.2); }
+    .badge-hard { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+
+    /* ── SCREENSHOTS / PROTOTYPES ── */
+    .proto-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
+    .proto-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .proto-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
+    .proto-label { padding: 14px 18px; font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+
+    /* ── SPONSOR INTERVIEW ── */
+    .sponsor-profile-bar {
+      display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+      background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.05));
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: var(--radius); padding: 24px 28px;
+      max-width: 760px; margin: 0 auto 52px;
+    }
+    .sp-avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .sp-meta h4 { font-weight: 700; color: var(--text); font-size: 1rem; margin-bottom: 3px; }
+    .sp-meta p { font-size: 0.82rem; color: var(--text-muted); }
+    .sp-date { margin-left: auto; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); border-radius: 8px; padding: 7px 14px; color: #a5b4fc; font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
+
+    .qa-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto 52px; }
+    .qa-card { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 26px; position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.2s; }
+    .qa-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: linear-gradient(180deg, var(--accent), var(--accent2)); }
+    .qa-card:hover { border-color: rgba(99,102,241,0.28); transform: translateY(-2px); }
+    .qa-tag { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+    .qa-q { font-weight: 700; font-size: 0.95rem; color: var(--text); margin-bottom: 14px; line-height: 1.4; }
+    .qa-divider { width: 28px; height: 2px; background: rgba(99,102,241,0.3); border-radius: 2px; margin-bottom: 12px; }
+    .qa-a { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; }
+    .qa-a strong { color: #c4b5fd; }
+
+    .takeaway-box { background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.04)); border: 1px solid rgba(99,102,241,0.18); border-radius: 20px; padding: 36px; max-width: 760px; margin: 0 auto 48px; }
+    .takeaway-box h3 { font-size: 1rem; font-weight: 800; color: var(--text); margin-bottom: 22px; }
+    .takeaway-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .takeaway-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+    .t-icon { width: 28px; height: 28px; border-radius: 8px; background: rgba(99,102,241,0.15); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0; margin-top: 1px; }
+    .takeaway-list strong { color: #c4b5fd; }
+
+    .sponsor-photos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; max-width: 760px; margin: 0 auto; }
+    .sponsor-photo-slot { background: var(--surface); border: 2px dashed rgba(99,102,241,0.2); border-radius: var(--radius); min-height: 160px; display: flex; align-items: center; justify-content: center; font-size: 0.82rem; color: var(--text-dim); text-align: center; padding: 20px; overflow: hidden; }
+    .sponsor-photo-slot img { width: 100%; height: 100%; object-fit: cover; border-radius: calc(var(--radius) - 4px); }
+
+    /* ── TEAM ── */
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; max-width: 700px; margin: 0 auto; }
+    .team-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px 28px; text-align: center; transition: border-color 0.3s, transform 0.2s; }
+    .team-card:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-3px); }
+    .team-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 16px; display: block; border: 3px solid rgba(99,102,241,0.3); }
+    .team-name { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.05rem; color: var(--text); margin-bottom: 4px; }
+    .team-role { font-size: 0.8rem; color: var(--accent); font-weight: 600; margin-bottom: 12px; }
+    .team-bio { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ── TIMELINE ── */
+    .timeline { max-width: 680px; margin: 0 auto; position: relative; }
+    .timeline::before { content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--accent), transparent); }
+    .tl-item { display: flex; gap: 28px; padding-bottom: 40px; position: relative; }
+    .tl-dot { width: 42px; height: 42px; border-radius: 50%; background: rgba(99,102,241,0.15); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: var(--accent); flex-shrink: 0; z-index: 1; }
+    .tl-dot.future { border-color: var(--text-dim); color: var(--text-dim); background: transparent; }
+    .tl-content { padding-top: 8px; }
+    .tl-week { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+    .tl-week.future { color: var(--text-dim); }
+    .tl-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 6px; }
+    .tl-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ── CTA ── */
+    .cta-section { padding: 100px 20px; text-align: center; position: relative; overflow: hidden; }
+    .cta-section::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 400px; background: radial-gradient(ellipse, rgba(99,102,241,0.1) 0%, transparent 70%); pointer-events: none; }
+    .cta-section h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; margin-bottom: 16px; }
+    .cta-section p { max-width: 500px; margin: 0 auto 36px; color: var(--text-muted); font-size: 1rem; line-height: 1.7; }
+    .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── FOOTER ── */
+    footer { padding: 40px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; max-width: 1100px; margin: 0 auto; }
+    .footer-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: var(--text); }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { color: var(--text-dim); font-size: 0.85rem; text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { color: var(--text-dim); font-size: 0.82rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .sp-date { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">🧠 BRAIN<span>BOOST</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#games">Games</a></li>
+    <li><a href="#sponsor">Sponsor</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#timeline">Roadmap</a></li>
+  </ul>
+  <a class="nav-cta" href="#support">Back Us Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">🚀 School Project 2025–2026</div>
+  <h1>Train Your Brain.<br>Level Up Your IQ.</h1>
+  <p>Interactive brain-training games designed for teenagers to sharpen memory, logic, focus, and problem-solving — one challenge at a time.</p>
+  <div class="hero-btns">
+    <a class="btn-primary" href="#games">Explore Games</a>
+    <a class="btn-secondary" href="#about">Learn More</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">6+</div><div class="stat-label">Brain Games</div></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">Skill Areas</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free to Play</div></div>
+  </div>
+</section>
+
+<!-- 01 — ABOUT -->
+<section id="about" class="section section-alt">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-label">01 — Project Description</div>
+        <h2 class="section-title">What Is BrainBoost?</h2>
+        <p class="section-sub">BrainBoost is a free web platform of interactive mini-games built specifically for teens aged 13–18. Unlike passive entertainment, every game is engineered to strengthen real cognitive skills — memory, logical reasoning, reaction speed, and sustained focus.</p>
+        <p class="section-sub" style="margin-top:14px;">Teens spend hours on screens but rarely in ways that build mental capability. BrainBoost turns screen time into brain time, making improvement feel like play.</p>
+        <div class="about-pills">
+          <span class="pill">🧠 Memory Training</span>
+          <span class="pill">⚡ Reaction Speed</span>
+          <span class="pill">🔍 Logic & Reasoning</span>
+          <span class="pill">🎯 Focus & Attention</span>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-visual-row">
+          <div class="avi-icon">🎯</div>
+          <div><div class="avi-label">Target Audience</div><div class="avi-sub">Teenagers aged 13–18</div></div>
+        </div>
+        <div class="about-visual-row">
+          <div class="avi-icon">💡</div>
+          <div><div class="avi-label">Core Purpose</div><div class="avi-sub">Improve cognitive performance through play</div></div>
+        </div>
+        <div class="about-visual-row">
+          <div class="avi-icon">🆓</div>
+          <div><div class="avi-label">Price</div><div class="avi-sub">Completely free, no download needed</div></div>
+        </div>
+        <div class="about-visual-row">
+          <div class="avi-icon">📱</div>
+          <div><div class="avi-label">Platform</div><div class="avi-sub">Web — works on any device</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 — FUNCTIONAL REQUIREMENTS -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-label">02 — Functional Requirements</div>
+    <h2 class="section-title">What the Platform Does</h2>
+    <p class="section-sub">Every feature is designed to keep teens engaged while actively improving their cognitive performance.</p>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card"><div class="fc-icon">🔐</div><div class="fc-title">User Registration & Login</div><div class="fc-desc">Players create an account to save progress, scores, and personal stats across sessions.</div></div>
+    <div class="feature-card"><div class="fc-icon">🏆</div><div class="fc-title">Scoring & Leaderboard</div><div class="fc-desc">Each game tracks score, time, and accuracy. A global leaderboard encourages friendly competition.</div></div>
+    <div class="feature-card"><div class="fc-icon">📊</div><div class="fc-title">Progress Dashboard</div><div class="fc-desc">Visual charts show improvement over time across all skill categories.</div></div>
+    <div class="feature-card"><div class="fc-icon">🎮</div><div class="fc-title">Multiple Game Modes</div><div class="fc-desc">6 unique games each targeting a different cognitive area, with three difficulty levels per game.</div></div>
+    <div class="feature-card"><div class="fc-icon">💾</div><div class="fc-title">Data Storage</div><div class="fc-desc">All user data, game results, and preferences stored securely in Firebase.</div></div>
+    <div class="feature-card"><div class="fc-icon">📱</div><div class="fc-title">Mobile Responsive</div><div class="fc-desc">Fully playable on phones, tablets, and desktops without installing anything.</div></div>
+  </div>
+</section>
+
+<!-- 03 — TECHNICAL REQUIREMENTS -->
+<section class="section section-alt">
+  <div class="section-header">
+    <div class="section-label">03 — Technical Requirements</div>
+    <h2 class="section-title">Built With</h2>
+    <p class="section-sub">A modern, accessible tech stack that keeps things fast, reliable, and deployable.</p>
+  </div>
+  <div class="tech-grid">
+    <div class="tech-chip"><div class="tc-icon">🌐</div><div class="tc-name">HTML5</div><div class="tc-role">Structure</div></div>
+    <div class="tech-chip"><div class="tc-icon">🎨</div><div class="tc-name">CSS3</div><div class="tc-role">Styling</div></div>
+    <div class="tech-chip"><div class="tc-icon">⚡</div><div class="tc-name">JavaScript</div><div class="tc-role">Game Logic</div></div>
+    <div class="tech-chip"><div class="tc-icon">🔥</div><div class="tc-name">Firebase</div><div class="tc-role">Database & Auth</div></div>
+    <div class="tech-chip"><div class="tc-icon">🐙</div><div class="tc-name">GitHub</div><div class="tc-role">Version Control</div></div>
+    <div class="tech-chip"><div class="tc-icon">🚀</div><div class="tc-name">Netlify</div><div class="tc-role">Hosting</div></div>
+  </div>
+</section>
+
+<!-- 04 — GAMES -->
+<section id="games" class="section">
+  <div class="section-header">
+    <div class="section-label">04 — The Games</div>
+    <h2 class="section-title">Choose Your Challenge</h2>
+    <p class="section-sub">Six interactive games. Each one linked to a real cognitive skill. All completely free.</p>
+  </div>
+  <div class="games-grid">
+
+    <div class="game-card">
+      <div class="game-thumb">
+        <!-- REPLACE CONTENT BELOW with: <img src="screenshot-memory-matrix.png" alt="Memory Matrix"> -->
+        🧠
+      </div>
+      <div class="game-body">
+        <div class="game-name">Memory Matrix</div>
+        <div class="game-skill">Trains: Short-term Memory</div>
+        <span class="badge badge-easy">Easy</span>
+      </div>
+    </div>
+
+    <div class="game-card">
+      <div class="game-thumb">
+        <!-- REPLACE with: <img src="screenshot-logic-ladder.png" alt="Logic Ladder"> -->
+        🔢
+      </div>
+      <div class="game-body">
+        <div class="game-name">Logic Ladder</div>
+        <div class="game-skill">Trains: Logical Reasoning</div>
+        <span class="badge badge-medium">Medium</span>
+      </div>
+    </div>
+
+    <div class="game-card">
+      <div class="game-thumb">🎯</div>
+      <div class="game-body">
+        <div class="game-name">Focus Flow</div>
+        <div class="game-skill">Trains: Sustained Attention</div>
+        <span class="badge badge-medium">Medium</span>
+      </div>
+    </div>
+
+    <div class="game-card">
+      <div class="game-thumb">🔐</div>
+      <div class="game-body">
+        <div class="game-name">Speed Cipher</div>
+        <div class="game-skill">Trains: Processing Speed</div>
+        <span class="badge badge-hard">Hard</span>
+      </div>
+    </div>
+
+    <div class="game-card">
+      <div class="game-thumb">🗺️</div>
+      <div class="game-body">
+        <div class="game-name">Path Finder</div>
+        <div class="game-skill">Trains: Spatial Reasoning</div>
+        <span class="badge badge-hard">Hard</span>
+      </div>
+    </div>
+
+    <div class="game-card">
+      <div class="game-thumb">📝</div>
+      <div class="game-body">
+        <div class="game-name">Word Blitz</div>
+        <div class="game-skill">Trains: Verbal Fluency</div>
+        <span class="badge badge-easy">Easy</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 04b — SKETCHES -->
+<section class="section section-alt">
+  <div class="section-header">
+    <div class="section-label">04b — Sketches & Prototype</div>
+    <h2 class="section-title">Early Designs</h2>
+    <p class="section-sub">Our first wireframes and mockups that shaped the current design direction.</p>
+  </div>
+  <div class="proto-grid">
+    <div class="proto-card">
+      <img src="1.png" alt="Homepage Wireframe" />
+      <div class="proto-label">Homepage Wireframe</div>
+    </div>
+    <div class="proto-card">
+      <img src="2.png" alt="Game Dashboard" />
+      <div class="proto-label">Game Dashboard</div>
+    </div>
+    <div class="proto-card">
+      <img src="3.png" alt="Progress Tracker" />
+      <div class="proto-label">Progress Tracker / Focus Flow</div>
+    </div>
+  </div>
+</section>
+
+<!-- 04c — SPONSOR INTERVIEW -->
+<section id="sponsor" class="section">
+  <div class="section-header">
+    <div class="section-label">04c — Sponsor Interview</div>
+    <h2 class="section-title">What Our Sponsor Thinks</h2>
+    <p class="section-sub">Before writing a single line of code, we interviewed real people to validate our idea. Here's what we learned — and how it shaped BrainBoost.</p>
+  </div>
+
+  <div class="sponsor-profile-bar">
+    <div class="sp-avatar">🎓</div>
+    <div class="sp-meta">
+      <h4>AkhmetABI &amp; Alpmapys</h4>
+      <p>Tutor &amp; Classmate — Bolat Zhantore and Khakimzhan Yerniyaz</p>
+    </div>
+    <div class="sp-date">📅 07.02.2026</div>
+  </div>
+
+  <div class="qa-grid">
+    <div class="qa-card">
+      <div class="qa-tag">Q1 — The Problem</div>
+      <div class="qa-q">Do students actually struggle with focus and memory today?</div>
+      <div class="qa-divider"></div>
+      <div class="qa-a">"Many students have trouble concentrating because of <strong>constant distractions from social media and fast-paced content</strong>. This affects academic performance, confidence, and long-term learning habits. Mental skills are just as important as physical health — yet they're often ignored."</div>
+    </div>
+    <div class="qa-card">
+      <div class="qa-tag">Q2 — Target Audience</div>
+      <div class="qa-q">Who should this product be built for?</div>
+      <div class="qa-divider"></div>
+      <div class="qa-a">"Primarily <strong>students and teenagers</strong>, as well as young adults who want to improve mental performance. The game should be welcoming to beginners but still <strong>challenging enough to stay interesting</strong> as users improve."</div>
+    </div>
+    <div class="qa-card">
+      <div class="qa-tag">Q3 — Features</div>
+      <div class="qa-q">What would make this product credible and useful?</div>
+      <div class="qa-divider"></div>
+      <div class="qa-a">"Multiple mini-games, <strong>increasing difficulty</strong>, and a <strong>scoring system</strong> add credibility. It should be interactive, provide clear feedback, and track progress through levels. Overly complicated features are not necessary for a student project."</div>
+    </div>
+    <div class="qa-card">
+      <div class="qa-tag">Q4 — Scope</div>
+      <div class="qa-q">What are your expectations given this is a student project?</div>
+      <div class="qa-divider"></div>
+      <div class="qa-a">"A <strong>functional prototype rather than a commercial product</strong>. Simple but polished design. Stable performance without major bugs. It is better to do a few things well than to try to do too much."</div>
+    </div>
+    <div class="qa-card">
+      <div class="qa-tag">Q5 — Values</div>
+      <div class="qa-q">What would make you proud to support this project?</div>
+      <div class="qa-divider"></div>
+      <div class="qa-a">"A project that <strong>helps users improve focus, memory, reaction speed, and thinking skills</strong> through games rather than pressure or stress. The focus on self-improvement rather than harmful content matters a lot."</div>
+    </div>
+    <div class="qa-card">
+      <div class="qa-tag">Q6 — Advice</div>
+      <div class="qa-q">What is your top advice before we start building?</div>
+      <div class="qa-divider"></div>
+      <div class="qa-a">"Focus on <strong>user experience</strong>. Keep the design simple. Make sure the game is <strong>enjoyable as well as useful</strong>. Show effort, creativity, and reflection in every part of the project."</div>
+    </div>
+  </div>
+
+  <div class="takeaway-box">
+    <h3>💡 What We Learned — And How It Changed Our Design</h3>
+    <ul class="takeaway-list">
+      <li><div class="t-icon">🎯</div><span>The sponsor confirmed that <strong>teenagers are the right audience</strong> — we locked our age range to 13–18 and designed all difficulty curves around that group.</span></li>
+      <li><div class="t-icon">📈</div><span>Feedback on progressive difficulty led us to add <strong>three difficulty levels per game</strong> instead of a single flat challenge.</span></li>
+      <li><div class="t-icon">🧹</div><span>The "do a few things well" advice helped us <strong>cut two planned games</strong> from scope to polish the core six properly.</span></li>
+      <li><div class="t-icon">📊</div><span>The sponsor's emphasis on tracking progress directly inspired our <strong>Progress Dashboard</strong> feature with per-skill visual charts.</span></li>
+    </ul>
+  </div>
+
+  <!-- Photo evidence — replace placeholders with real <img> tags -->
+  <div class="sponsor-photos">
+    <div class="sponsor-photo-slot">
+      <img src="69.jpeg" alt="Sponsor interview">
+  
+    </div>
+    <div class="sponsor-photo-slot">
+      <img src="67.jpeg" alt="Sponsor interview">
+
+    </div>
+  </div>
+</section>
+
+<!-- 05 — TEAM -->
+<section id="team" class="section section-alt">
+  <div class="section-header">
+    <div class="section-label">05 — About the Authors</div>
+    <h2 class="section-title">Meet the Team</h2>
+    <p class="section-sub">A group of passionate students building tools they actually want to use.</p>
+  </div>
+  <div class="team-grid">
+    <div class="team-card">
+      <img class="team-avatar" src="zhantore.jpeg" alt="Bolat Zhantore" />
+      <div class="team-name">Bolat Zhantore</div>
+      <div class="team-role">Lead Developer</div>
+      <div class="team-bio">Passionate about JavaScript and game mechanics. Loves turning ideas into playable experiences.</div>
+    </div>
+    <div class="team-card">
+      <img class="team-avatar" src="yerniaz.jpeg" alt="Khakimzhan Yerniyaz" />
+      <div class="team-name">Khakimzhan Yerniyaz</div>
+      <div class="team-role">UI/UX Designer</div>
+      <div class="team-bio">Obsessed with clean design and user experience. Makes sure everything looks and feels great.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 — TIMELINE -->
+<section id="timeline" class="section">
+  <div class="section-header">
+    <div class="section-label">06 — Additional Information</div>
+    <h2 class="section-title">Development Timeline</h2>
+    <p class="section-sub">Our roadmap from idea to launch — and beyond.</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot">W1</div>
+      <div class="tl-content">
+        <div class="tl-week">Week 1</div>
+        <div class="tl-title">Research & Concept</div>
+        <div class="tl-desc">Studied cognitive science, identified target skills, defined game concepts and user personas. Conducted sponsor interview.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">W2</div>
+      <div class="tl-content">
+        <div class="tl-week">Week 2</div>
+        <div class="tl-title">Design & Wireframing</div>
+        <div class="tl-desc">Created wireframes, established visual identity, chose color system and typography.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">W3</div>
+      <div class="tl-content">
+        <div class="tl-week">Week 3</div>
+        <div class="tl-title">Core Development</div>
+        <div class="tl-desc">Built first 3 games in HTML/CSS/JS. Set up Firebase for authentication and score storage.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">W4</div>
+      <div class="tl-content">
+        <div class="tl-week">Week 4</div>
+        <div class="tl-title">Full Launch</div>
+        <div class="tl-desc">All 6 games live. Homepage published. Deployed on Netlify. Shared with classmates for testing.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot future">✦</div>
+      <div class="tl-content">
+        <div class="tl-week future">Future</div>
+        <div class="tl-title">Planned Improvements</div>
+        <div class="tl-desc">AI-powered difficulty adjustment, teacher dashboards, multilingual support (Kazakh/Russian/English), and a charity component donating ad revenue to STEM education nonprofits.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="support" class="cta-section">
+  <h2>Help Us Build the Future<br>of Teen Learning</h2>
+  <p>Every supporter helps us add more games, improve the platform, and keep it completely free for teens worldwide.</p>
+  <div class="cta-btns">
+    <a class="btn-primary" href="#">🚀 Back This Project</a>
+    <!-- Replace # with your actual GitHub repo URL -->
+    <a class="btn-secondary" href="https://github.com/YOUR_USERNAME/YOUR_REPO" target="_blank">⭐ Star on GitHub</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🧠 BRAINBOOST</div>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#games">Games</a>
+    <a href="#sponsor">Sponsor</a>
+    <a href="#team">Team</a>
+    <!-- Replace # with your actual GitHub repo URL -->
+    <a href="https://github.com/jantore0/design4" target="_blank">GitHub</a>
+  </div>
+  <div class="footer-copy">© 2025 BrainBoost — A School Project</div>
+</footer>
+
+</body>
+</html>
